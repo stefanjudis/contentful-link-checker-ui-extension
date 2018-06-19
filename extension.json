@@ -1,5 +1,5 @@
 {
-  "name": "Extension to check for broken or invalid URLs",
+  "name": "URL checker",
   "id": "cf-broken-link-checker",
   "fieldTypes": ["Boolean"],
   "srcdoc": "./index.html",
