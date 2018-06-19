@@ -20,7 +20,7 @@ Currently there are two way to install a UI-extension.
 
 - go to the extensions section in the web app
 - click `Add extension`
-- click `Instal from GitHub`
+- click `Install from GitHub`
 - paste `https://github.com/stefanjudis/contentful-link-checker-ui-extension/blob/master/extension.json` into the input field
 - done ✅
 
@@ -28,7 +28,7 @@ Currently there are two way to install a UI-extension.
 
 ### Installation via the command line
 
-- clone the repository
+- clone the repository via `git clone git@github.com:stefanjudis/contentful-link-checker-ui-extension.git`
 - run `npm install` in the cloned directory
 - run `npm run create`
 - done ✅
@@ -41,7 +41,7 @@ To enable the extension go to a content type of your choice and add a new field 
 
 ![The appearance panel of a field in a content type](./images/appearance.jpg)
 
-*Don't forget to disable the field in the responses. This boolean field is most likely nothing you want to include in your payloads.*
+*Don't forget to disable the created Boolean field in the API responses. This boolean field is most likely nothing you want to include in your payloads.*
 
 ## There is one big gotcha!
 
