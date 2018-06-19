@@ -1,0 +1,16 @@
+{
+  "name": "Extension to check for broken or invalid URLs",
+  "id": "cf-broken-link-checker",
+  "fieldTypes": ["Boolean"],
+  "srcdoc": "./index.html",
+  "sidebar": true,
+  "parameters": {
+    "instance": [{
+      "id": "forbiddenUrls",
+      "type": "Symbol",
+      "name": "URLs that are not allowed",
+      "description": "comma separated list of URLs (e.g. 'google.com,staging.com')",
+      "default": ""
+    }]
+  }
+}
