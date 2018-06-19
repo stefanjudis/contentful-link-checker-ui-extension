@@ -43,7 +43,7 @@ To enable the extension go to a content type of your choice and add a new field 
 
 *Don't forget to disable the created Boolean field in the API responses. This boolean field is most likely nothing you want to include in your payloads.*
 
-## There is one big gotcha!
+## There is one big gotcha – Use at own risk!
 
 Due to the security setting of Contentful and the way UI-extensions work all requests are piped through http://cors-anywhere.herokuapp.com. This is needed because most of the URLs you'll link to won't include CORS headers which means that requests made by the extension would be blocked.
 
