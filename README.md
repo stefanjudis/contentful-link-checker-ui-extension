@@ -1,7 +1,4 @@
-![header](./.github/header.png)
-<p align="center">
-  <img src="/stefanjudis/contentful-link-checker-ui-extension/blob/master/somewhat-logo.jpg?raw=true" alt="Contentful link checker logo">
-</p>
+![header](./somewhat-logo.jpg)
 
 # Contentful URL checker UI extension
 
