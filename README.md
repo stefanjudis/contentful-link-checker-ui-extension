@@ -47,4 +47,4 @@ To enable the extension go to a content type of your choice and add a new field 
 
 Due to the security setting of Contentful and the way UI-extensions work all requests are piped through http://cors-anywhere.herokuapp.com. This is needed because most of the URLs you'll link to won't include CORS headers which means that requests made by the extension would be blocked.
 
-But, the UI-extension does nothing else then checking the status code which means that even when the owner of cors-anywhere changes the responses it's harmless.
+The UI-extension itself does nothing else then [checking the status code of the request response](https://github.com/stefanjudis/contentful-link-checker-ui-extension/blob/master/index.html#L136) which means that even when the owner of cors-anywhere changes the responses in an malicious way there is no risk.
