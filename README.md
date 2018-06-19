@@ -12,7 +12,7 @@ Currently there are two way to install a UI-extension.
 
 ### Installation via the web app
 
-Go to the exten
+// TODO
 
 ### Installation via the command line
 
@@ -20,3 +20,4 @@ In case you want to modify the source code and prefer your local development env
 
 ## One big gotcha!
 
+// TODO
