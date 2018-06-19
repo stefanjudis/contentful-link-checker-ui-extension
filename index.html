@@ -274,7 +274,7 @@
             ),
 
             h('div', { class: 'cf-form-option' },
-              h('button', { type: 'button', class: 'cf-btn-primary', onclick: _ => this.validateUrls() }, 'Validate URLs'),
+              h('button', { type: 'button', class: 'cf-btn-primary', onclick: _ => this.validateUrls(), disabled: isLoading }, 'Validate URLs'),
             ),
             h('div', { class: 'cf-form-option' },
               h('label', null,
