@@ -120,7 +120,6 @@
 
       function isUrlAllowed (url, forbiddenUrls = []) {
         return forbiddenUrls.reduce((acc, notAllowedUrl) => {
-          url === 'https://www.flinkly.com/does-not-exist/' && console.log(url, url.match(notAllowedUrl));
           if (acc && url.match(notAllowedUrl)) {
             return false;
           }
