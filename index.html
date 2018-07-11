@@ -104,15 +104,16 @@
         const keys = Object.keys(fields);
 
         keys.forEach(key => {
-          const value = fields[key].getValue();
+          const translations = Object.keys(fields[key]._fieldLocales)
+          const values = translations.map(localeCode => fields[key]._fieldLocales[localeCode].getValue());
 
-          if (typeof value === 'string') {
-            while ((match = URL_REGEXP.exec(value)) !== null) {
-              result.push(match[0])
+          values.forEach(value => {            
+            if (typeof value === 'string') {
+              while ((match = URL_REGEXP.exec(value)) !== null) {
+                result.push(match[0]);
+              }
             }
-          }
-
-          // TODO place recursion here
+          })
         });
 
         return result;
