@@ -104,8 +104,7 @@
         const keys = Object.keys(fields);
 
         keys.forEach(key => {
-          const translations = Object.keys(fields[key]._fieldLocales)
-          const values = translations.map(localeCode => fields[key]._fieldLocales[localeCode].getValue());
+          const values = fields[key].locales.map(localeCode => fields[key].getValue(localeCode));
 
           values.forEach(value => {            
             if (typeof value === 'string') {
