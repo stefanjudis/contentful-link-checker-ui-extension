@@ -114,10 +114,13 @@
           value: fields[key].getValue(langCode)
         }));
 
-        fieldsInfo.forEach(fieldInfo => {
-          if (typeof fieldInfo.value === 'string') {
-            while ((match = URL_REGEXP.exec(fieldInfo.value)) !== null) {
-              result.push(fieldInfo);
+        fieldsInfo.forEach(({ lang, value }) => {
+          if (typeof value === 'string') {
+            while ((match = URL_REGEXP.exec(value)) !== null) {
+              result.push({
+                lang,
+                value: match[0]
+              });
             }
           }
         })
@@ -136,25 +139,26 @@
       }, true);
     }
 
-    async function getValidatedUrl(urlField, forbiddenUrls) {
-      const isAllowed = isUrlAllowed(urlField.value, forbiddenUrls);
-      let validatedUrl;
+    async function getValidatedUrl({ value, lang }, forbiddenUrls) {
+      const isAllowed = isUrlAllowed(value, forbiddenUrls);
+
+      let validatedUrl = {
+        lang: lang,
+        url: value,
+        isAllowed
+      };
+
       try {
-        const response = await fetch(`https://cors-anywhere.herokuapp.com/${urlField.value}`);
-        validatedUrl = {
-          lang: urlField.lang,
-          url: urlField.value,
-          isAllowed,
+        const response = await fetch(`https://cors-anywhere.herokuapp.com/${value}`);
+
+        validatedUrl = Object.assign(validatedUrl, {
           status: response.status,
           isValid: response.status === 200 && isAllowed
-        };
+        });
       } catch (error) {
-        validatedUrl = {
-          lang: urlField.lang,
-          url: urlField.value,
-          isAllowed,
+        validatedUrl = Object.assign(validatedUrl, {
           isValid: false
-        }
+        });
       }
 
       return validatedUrl;
@@ -171,7 +175,9 @@
       while (urlsToCheck.length) {
         setState({ progress: { total, done: total - urls.length } });
         const validatedUrls = await Promise.all(
-          urlsToCheck.map(async (url) => await getValidatedUrl(url, forbiddenUrls))
+          urlsToCheck.map(
+            async (url) => await getValidatedUrl(url, forbiddenUrls)
+          )
         );
 
         allValidatedUrls.push(...validatedUrls);
