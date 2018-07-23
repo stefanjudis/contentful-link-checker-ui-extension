@@ -45,6 +45,33 @@
       left: 0;
     }
 
+    .c-list {
+      list-style: none;
+      margin: 0 0 1em;
+      padding: 0;
+    }
+
+    .c-listItem {
+      padding: .75em;
+      margin-bottom: .5em;
+      text-align: center;
+      background: #fff;
+    }
+
+    .c-listItem__url {
+      display: block;
+      font-weight: bold;
+      margin-bottom: .25em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .c-listItem__msg {
+      display: inline-block;
+      margin-top: .25em;
+    }
+
     .c-msg {
       display: flex;
       justify-content: center;
@@ -102,7 +129,7 @@
 <body>
   <script>
     const { h, render, Component } = window.preact;
-    const URL_REGEXP = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/gi;
+    const URL_REGEXP = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w\-]*))?)/gi;
     const getUrlsToCheck = (urls) => urls.splice(0, 6);
 
     function getAllUrls({ fields }, result = []) {
@@ -119,7 +146,8 @@
             while ((match = URL_REGEXP.exec(value)) !== null) {
               result.push({
                 lang,
-                value: match[0]
+                value: match[0],
+                fieldName: key
               });
             }
           }
@@ -139,11 +167,12 @@
       }, true);
     }
 
-    async function getValidatedUrl({ value, lang }, forbiddenUrls) {
+    async function getValidatedUrl({ value, lang, fieldName }, forbiddenUrls) {
       const isAllowed = isUrlAllowed(value, forbiddenUrls);
 
       let validatedUrl = {
-        lang: lang,
+        fieldName,
+        lang,
         url: value,
         isAllowed
       };
@@ -237,6 +266,23 @@
       }
     }
 
+    class InvalidList extends Component {
+      render({ urls }) {
+        return h('ul', { class: 'c-list' },
+          urls.map(({ lang, isAllowed, url, status, fieldName }) => h('li', { class: 'c-listItem' },
+            h('a', { class: 'c-listItem__url', href: url, target: '_blank' }, url),
+            h('div', null,
+              h('strong', null, 'Field: '),
+              h('span', null, `${fieldName} [${lang}]`)
+            ),
+            isAllowed ?
+              '' :
+              h('strong', { class: 'c-listItem__msg' }, 'This URL is blacklisted...')
+          ))
+        )
+      }
+    }
+
     class App extends Component {
       componentWillMount() {
         this.setState({
@@ -295,18 +341,21 @@
           h('div', { class: 'cf-form-option' },
             h('button', { type: 'button', class: 'cf-btn-primary', onclick: _ => this.validateUrls(), disabled: isLoading }, 'Validate URLs'),
           ),
-          h('div', { class: 'cf-form-option' },
-            h('label', null,
-              h('input', { type: 'checkbox', checked: showAllUrls, onchange: _ => this.toggleUrlView() }),
-              'Show all URLs'
-            ),
-          ),
 
           isLoading
             ? ''
-            : invalidUrls.length && !showAllUrls
-              ? h(Table, { urls: invalidUrls })
+            : invalidUrls.length
+              ? h(InvalidList, { urls: invalidUrls })
               : '',
+
+          !isLoading
+            ? h('div', { class: 'cf-form-option' },
+              h('label', null,
+                h('input', { type: 'checkbox', checked: showAllUrls, onchange: _ => this.toggleUrlView() }),
+                'Show all URLs'
+              ),
+            )
+            : '',
 
           showAllUrls
             ? h(Table, { urls: validatedUrls })
