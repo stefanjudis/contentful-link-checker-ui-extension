@@ -359,7 +359,7 @@
             )
             : '',
 
-          showAllUrls
+          showAllUrls && !isLoading
             ? h(Table, { urls: validatedUrls })
             : ''
         )
